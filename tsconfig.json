@@ -1,0 +1,25 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "tailwind.config.js"
+  ],
+  "exclude": [
+    "node_modules/expo/node_modules",
+    "node_modules/expo/babel.config.js",
+    "node_modules/expo/metro.config.js",
+    "node_modules/expo/jest.config.js",
+    "node_modules/expo-router/entry.js"
+  ]
+}
