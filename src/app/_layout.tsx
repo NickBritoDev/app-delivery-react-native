@@ -1,26 +1,18 @@
-import { SafeAreaView } from 'react-native';
-import { Slot } from 'expo-router';
-import React from 'react';
-// import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter'
-// import { Loading } from '@/components/loading'
+import { Slot } from "expo-router";
+import { SafeAreaView } from "react-native";
+import { Inter_700Bold, Inter_400Regular, Inter_600SemiBold, Inter_500Medium, useFonts } from '@expo-google-fonts/inter'
+import { Loading } from "@/components/loading";
 
-export default function Layout() {
-    // const [fontsLoaded] = useFonts(
-    //     {
-    //         Inter_400Regular,
-    //         Inter_500Medium,
-    //         Inter_600SemiBold,
-    //         Inter_700Bold
-    //     }
-    // )
+export default function _layout() {
+    const [fontsLoaded]=useFonts({ Inter_700Bold, Inter_400Regular, Inter_600SemiBold, Inter_500Medium })
 
-    // if (!fontsLoaded) {
-    //     return <Loading />
-    // }
+    if(!fontsLoaded){
+        return <Loading/>
+    }
 
     return (
-        <SafeAreaView className="flex-1 bg-slate-900">
+        <SafeAreaView className="flex-1 bg-slate-900 pt-8">
             <Slot />
         </SafeAreaView>
-    );
+    )
 }
