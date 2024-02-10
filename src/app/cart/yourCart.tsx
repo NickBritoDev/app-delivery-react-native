@@ -6,10 +6,16 @@ import { Product } from "@/components/product";
 import { ProductsCartProps, useCartStore } from "@/stores/cartStores";
 import { formatCurrency } from "@/utils/functions/formatCurrency";
 import { Feather } from "@expo/vector-icons";
-import { Alert, ScrollView, Text, View } from "react-native";
+import { useNavigation } from "expo-router";
+import { useState } from "react";
+import { Alert, Linking, ScrollView, Text, View } from "react-native";
 // import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+const PHONE_NUMBER = "+5511945799235"
+
 export default function Cart() {
+  const navigation = useNavigation()
+  const [adress, setAdress] = useState("")
   const cartStoreItems = useCartStore()
 
   const total = formatCurrency(cartStoreItems.products.reduce((total, product) => total + product.price * product.quantity, 0))
@@ -29,6 +35,28 @@ export default function Cart() {
         }
       }
     ])
+  }
+
+  function handleOrder() {
+    if (adress.trim().length === 0) {
+      return Alert.alert('Ops...', "Informe os dados da entrega.")
+    }
+
+    const products = cartStoreItems.products.map((product) => `\n${product.quantity} ${product.title}`).join('')
+
+    const message = `
+    🍔 NOVO PEDIDO 🍟\n
+    🏠 Entregar em:${adress}\n
+
+    ITEMS DO PEDIDO:
+    ${products}
+
+    💲 Total: ${total}
+    `
+
+    Linking.openURL(`http://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${message}`)
+    cartStoreItems.clear()
+    navigation.goBack()
   }
 
   return (
@@ -56,12 +84,14 @@ export default function Cart() {
       </View>
 
       <View className="px-5 h-32">
-        <Input placeholder="Informe: Endereço, rua, bairro, cep, numero e complemento." />
+        <Input
+        // blurOnSubmit={true} onSubmitEditing={handleOrder} returnKeyType="next"
+        onChangeText={setAdress} placeholder="Informe: Endereço, rua, bairro, cep, numero e complemento." />
       </View>
       {/* </KeyboardAwareScrollView> */}
 
       <View className="px-5 mb-2 gap-4 py-4">
-        <Button>
+        <Button onPress={handleOrder}>
           <Button.Text>
             Enviar Pedido
           </Button.Text>
